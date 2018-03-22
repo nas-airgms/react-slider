@@ -4,11 +4,6 @@ CSS agnostic slider component for React.
 
 See demo: [https://mpowaga.github.io/react-slider/](https://mpowaga.github.io/react-slider/)
 
-### Installation
-
-```sh
-npm install react-slider
-```
 
 ### Overview
 
@@ -150,6 +145,10 @@ The length of the array must match the number of handles in the value array.
 ##### ariaValuetext {string}
 
 aria-valuetext for screen-readers
+
+##### marks {array}
+
+Array with marks. Each element may be an integer value or an object {position:text}
 
 ### Methods
 

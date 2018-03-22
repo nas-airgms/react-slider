@@ -172,7 +172,9 @@
        *  Callback called when the the slider is clicked (handle or bars).
        *  Receives the value at the clicked position as argument.
        */
-      onSliderClick: PropTypes.func
+      onSliderClick: PropTypes.func,
+
+        marks:PropTypes.array,
     },
 
     getDefaultProps: function () {
@@ -191,7 +193,8 @@
         pearling: false,
         disabled: false,
         snapDragDisabled: false,
-        invert: false
+        invert: false,
+          marks:[0,20,40,60,80,100],
       };
     },
 
@@ -794,6 +797,42 @@
       );
     },
 
+    _renderMark(val) {
+      var pos = val;
+      var text = val;
+      if (typeof val === 'object') {
+        pos = Object.keys(val)[0];
+        text = val[pos];
+      }
+      return React.createElement('div', {
+        key: 'mark' + val,
+        ref: 'mark' + val,
+        className: 'mark',
+        style: {textAlign: 'center'}
+      }, text);
+    },
+
+    _renderMarks: function (offsetFrom, offsetTo) {
+      var marks = [];
+      for (var i in this.props.marks) {
+        marks.push(this._renderMark(this.props.marks[i]));
+      }
+      var style = this._buildBarStyle(offsetFrom, this.state.upperBound - offsetTo);
+      style.color = 'white';
+      style['zIndex'] = 1;
+      style.display = 'grid';
+      style['gridTemplateColumns'] = 'repeat(' + this.props.marks.length + ',1fr)';
+      style['gridTemplateRows'] = 'auto';
+      return (
+        React.createElement('div', {
+          key: 'barMarks',
+          ref: 'barMarks',
+          className: this.props.barClassName + ' ' + this.props.barClassName + '-marks',
+          style: style
+        }, marks)
+      );
+    },
+
     _renderBars: function (offset) {
       var bars = [];
       var lastIndex = offset.length - 1;
@@ -805,6 +844,8 @@
       }
 
       bars.push(this._renderBar(lastIndex + 1, offset[lastIndex], this.state.upperBound));
+
+        bars.push(this._renderMarks(0,this.state.upperBound));
 
       return bars;
     },
