@@ -797,32 +797,41 @@
       );
     },
 
-    _renderMark(val) {
+    _renderMark(val, offsetFrom, offsetTo) {
       var pos = val;
       var text = val;
       if (typeof val === 'object') {
         pos = Object.keys(val)[0];
         text = val[pos];
       }
+      var offset = 0;
+      var barMarks = document.getElementsByClassName('bar-marks');
+      if(barMarks.length > 0){
+        offset = (barMarks[0].clientWidth - offsetTo) / 2;//a half of slider
+      }
       return React.createElement('div', {
-        key: 'mark' + val,
-        ref: 'mark' + val,
+        key: 'mark' + pos,
+        ref: 'mark' + pos,
         className: 'mark',
-        style: {textAlign: 'center'}
+        style: {
+          position: 'absolute',
+          display: 'inline-block',
+          left: (offsetTo / this.props.max) * pos + offset + 'px'
+        }
       }, text);
     },
 
     _renderMarks: function (offsetFrom, offsetTo) {
       var marks = [];
       for (var i in this.props.marks) {
-        marks.push(this._renderMark(this.props.marks[i]));
+        marks.push(this._renderMark(this.props.marks[i],offsetFrom, offsetTo));
       }
       var style = this._buildBarStyle(offsetFrom, this.state.upperBound - offsetTo);
       style.color = 'white';
       style['zIndex'] = 1;
-      style.display = 'grid';
-      style['gridTemplateColumns'] = 'repeat(' + this.props.marks.length + ',1fr)';
-      style['gridTemplateRows'] = 'auto';
+      //style.display = 'grid';
+      //style['gridTemplateColumns'] = 'repeat(' + this.props.marks.length + ',1fr)';
+      //style['gridTemplateRows'] = 'auto';
       return (
         React.createElement('div', {
           key: 'barMarks',
