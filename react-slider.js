@@ -809,6 +809,8 @@
       if(barMarks.length > 0){
         offset = (barMarks[0].clientWidth - offsetTo) / 2;//a half of slider
       }
+      offset *= pos / this.props.max;
+      console.log(pos+' - '+offset);
       return React.createElement('div', {
         key: 'mark' + pos,
         ref: 'mark' + pos,
@@ -816,7 +818,7 @@
         style: {
           position: 'absolute',
           display: 'inline-block',
-          left: (offsetTo / this.props.max) * pos + offset + 'px'
+          left: ((offsetTo) / (this.props.max - this.props.min)) * pos + offset + 'px'
         }
       }, text);
     },
