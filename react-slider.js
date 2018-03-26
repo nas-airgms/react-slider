@@ -797,7 +797,7 @@
       );
     },
 
-    _renderMark(val, offsetFrom, offsetTo) {
+    _renderMark: function (val, offsetFrom, offsetTo) {
       var pos = val;
       var text = val;
       if (typeof val === 'object') {
@@ -817,7 +817,7 @@
         style: {
           position: 'absolute',
           display: 'inline-block',
-          left: ((offsetTo) / (this.props.max - this.props.min)) * pos + offset + 'px'
+          left: (offsetTo / (this.props.max - this.props.min)) * pos + offset + 'px'
         }
       }, text);
     },
